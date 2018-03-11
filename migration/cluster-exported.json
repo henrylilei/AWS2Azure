@@ -1,0 +1,1690 @@
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "labels": {
+      "app": "hadoop",
+      "chart": "hadoop-1.0.4",
+      "component": "hdfs-dn",
+      "heritage": "Tiller",
+      "release": "hadoop"
+    },
+    "name": "hadoop-hadoop-hdfs-dn",
+    "namespace": "hadoop-ns"
+  },
+  "spec": {
+    "ports": [
+      {
+        "name": "dfs",
+        "port": 9000,
+        "protocol": "TCP",
+        "targetPort": 9000
+      },
+      {
+        "name": "webhdfs",
+        "port": 50075,
+        "protocol": "TCP",
+        "targetPort": 50075
+      }
+    ],
+    "selector": {
+      "app": "hadoop",
+      "component": "hdfs-dn",
+      "release": "hadoop"
+    },
+    "sessionAffinity": "None",
+    "type": "ClusterIP"
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "labels": {
+      "app": "hadoop",
+      "chart": "hadoop-1.0.4",
+      "component": "hdfs-nn",
+      "heritage": "Tiller",
+      "release": "hadoop"
+    },
+    "name": "hadoop-hadoop-hdfs-nn",
+    "namespace": "hadoop-ns"
+  },
+  "spec": {
+    "ports": [
+      {
+        "name": "dfs",
+        "port": 9000,
+        "protocol": "TCP",
+        "targetPort": 9000
+      },
+      {
+        "name": "webhdfs",
+        "port": 50070,
+        "protocol": "TCP",
+        "targetPort": 50070
+      }
+    ],
+    "selector": {
+      "app": "hadoop",
+      "component": "hdfs-nn",
+      "release": "hadoop"
+    },
+    "sessionAffinity": "None",
+    "type": "ClusterIP"
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "labels": {
+      "app": "hadoop",
+      "chart": "hadoop-1.0.4",
+      "component": "yarn-nm",
+      "heritage": "Tiller",
+      "release": "hadoop"
+    },
+    "name": "hadoop-hadoop-yarn-nm",
+    "namespace": "hadoop-ns"
+  },
+  "spec": {
+    "ports": [
+      {
+        "name": "web",
+        "port": 8088,
+        "protocol": "TCP",
+        "targetPort": 8088
+      },
+      {
+        "name": "web2",
+        "port": 8082,
+        "protocol": "TCP",
+        "targetPort": 8082
+      },
+      {
+        "name": "api",
+        "port": 8042,
+        "protocol": "TCP",
+        "targetPort": 8042
+      }
+    ],
+    "selector": {
+      "app": "hadoop",
+      "component": "yarn-nm",
+      "release": "hadoop"
+    },
+    "sessionAffinity": "None",
+    "type": "ClusterIP"
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "labels": {
+      "app": "hadoop",
+      "chart": "hadoop-1.0.4",
+      "component": "yarn-rm",
+      "heritage": "Tiller",
+      "release": "hadoop"
+    },
+    "name": "hadoop-hadoop-yarn-rm",
+    "namespace": "hadoop-ns"
+  },
+  "spec": {
+    "ports": [
+      {
+        "name": "web",
+        "port": 8088,
+        "protocol": "TCP",
+        "targetPort": 8088
+      }
+    ],
+    "selector": {
+      "app": "hadoop",
+      "component": "yarn-rm",
+      "release": "hadoop"
+    },
+    "sessionAffinity": "None",
+    "type": "ClusterIP"
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "labels": {
+      "app": "hadoop",
+      "chart": "hadoop-1.0.4",
+      "component": "yarn-ui",
+      "heritage": "Tiller",
+      "release": "hadoop"
+    },
+    "name": "hadoop-hadoop-yarn-ui",
+    "namespace": "hadoop-ns"
+  },
+  "spec": {
+    "ports": [
+      {
+        "name": "web",
+        "port": 8088,
+        "protocol": "TCP",
+        "targetPort": 8088
+      }
+    ],
+    "selector": {
+      "app": "hadoop",
+      "component": "yarn-rm"
+    },
+    "sessionAffinity": "None",
+    "type": "ClusterIP"
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "annotations": {
+      "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"StatefulSet\",\"namespace\":\"hadoop-ns\",\"name\":\"hadoop-hadoop-hdfs-dn\",\"uid\":\"8d3a16f6-245a-11e8-9c69-0a8ad85db75e\",\"apiVersion\":\"apps/v1beta1\",\"resourceVersion\":\"274043\"}}\n"
+    },
+    "generateName": "hadoop-hadoop-hdfs-dn-",
+    "labels": {
+      "app": "hadoop",
+      "component": "hdfs-dn",
+      "controller-revision-hash": "hadoop-hadoop-hdfs-dn-6fbf5449d9",
+      "release": "hadoop"
+    },
+    "name": "hadoop-hadoop-hdfs-dn-0",
+    "namespace": "hadoop-ns"
+  },
+  "spec": {
+    "affinity": {
+      "podAntiAffinity": {
+        "preferredDuringSchedulingIgnoredDuringExecution": [
+          {
+            "podAffinityTerm": {
+              "labelSelector": {
+                "matchLabels": {
+                  "app": "hadoop",
+                  "component": "hdfs-dn",
+                  "release": "hadoop"
+                }
+              },
+              "topologyKey": "kubernetes.io/hostname"
+            },
+            "weight": 5
+          }
+        ]
+      }
+    },
+    "containers": [
+      {
+        "command": [
+          "/bin/bash",
+          "/tmp/hadoop-config/bootstrap.sh",
+          "-d"
+        ],
+        "image": "danisla/hadoop:2.7.3",
+        "imagePullPolicy": "IfNotPresent",
+        "livenessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/",
+            "port": 50075,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 10,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "name": "hdfs-dn",
+        "readinessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/",
+            "port": 50075,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 5,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "resources": {
+          "limits": {
+            "cpu": "1",
+            "memory": "2Gi"
+          },
+          "requests": {
+            "cpu": "10m",
+            "memory": "256Mi"
+          }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [
+          {
+            "mountPath": "/tmp/hadoop-config",
+            "name": "hadoop-config"
+          },
+          {
+            "mountPath": "/root/hdfs/datanode",
+            "name": "dfs"
+          },
+          {
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+            "name": "default-token-hpswz",
+            "readOnly": true
+          }
+        ]
+      }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "hostname": "hadoop-hadoop-hdfs-dn-0",
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "subdomain": "hadoop-hadoop-hdfs-dn",
+    "terminationGracePeriodSeconds": 0,
+    "tolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/notReady",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/unreachable",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      }
+    ],
+    "volumes": [
+      {
+        "configMap": {
+          "defaultMode": 420,
+          "name": "hadoop-hadoop"
+        },
+        "name": "hadoop-config"
+      },
+      {
+        "emptyDir": {},
+        "name": "dfs"
+      },
+      {
+        "name": "default-token-hpswz",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "default-token-hpswz"
+        }
+      }
+    ]
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "annotations": {
+      "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"StatefulSet\",\"namespace\":\"hadoop-ns\",\"name\":\"hadoop-hadoop-hdfs-nn\",\"uid\":\"8d3d778a-245a-11e8-9c69-0a8ad85db75e\",\"apiVersion\":\"apps/v1beta1\",\"resourceVersion\":\"274044\"}}\n"
+    },
+    "generateName": "hadoop-hadoop-hdfs-nn-",
+    "labels": {
+      "app": "hadoop",
+      "component": "hdfs-nn",
+      "controller-revision-hash": "hadoop-hadoop-hdfs-nn-bb4bf6fbb",
+      "release": "hadoop"
+    },
+    "name": "hadoop-hadoop-hdfs-nn-0",
+    "namespace": "hadoop-ns"
+  },
+  "spec": {
+    "affinity": {
+      "podAntiAffinity": {
+        "preferredDuringSchedulingIgnoredDuringExecution": [
+          {
+            "podAffinityTerm": {
+              "labelSelector": {
+                "matchLabels": {
+                  "app": "hadoop",
+                  "component": "hdfs-nn",
+                  "release": "hadoop"
+                }
+              },
+              "topologyKey": "kubernetes.io/hostname"
+            },
+            "weight": 5
+          }
+        ]
+      }
+    },
+    "containers": [
+      {
+        "command": [
+          "/bin/bash",
+          "/tmp/hadoop-config/bootstrap.sh",
+          "-d"
+        ],
+        "image": "danisla/hadoop:2.7.3",
+        "imagePullPolicy": "IfNotPresent",
+        "livenessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/",
+            "port": 50070,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 10,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "name": "hdfs-nn",
+        "readinessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/",
+            "port": 50070,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 5,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "resources": {
+          "limits": {
+            "cpu": "1",
+            "memory": "2Gi"
+          },
+          "requests": {
+            "cpu": "10m",
+            "memory": "256Mi"
+          }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [
+          {
+            "mountPath": "/tmp/hadoop-config",
+            "name": "hadoop-config"
+          },
+          {
+            "mountPath": "/root/hdfs/namenode",
+            "name": "dfs"
+          },
+          {
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+            "name": "default-token-hpswz",
+            "readOnly": true
+          }
+        ]
+      }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "hostname": "hadoop-hadoop-hdfs-nn-0",
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "subdomain": "hadoop-hadoop-hdfs-nn",
+    "terminationGracePeriodSeconds": 0,
+    "tolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/notReady",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/unreachable",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      }
+    ],
+    "volumes": [
+      {
+        "configMap": {
+          "defaultMode": 420,
+          "name": "hadoop-hadoop"
+        },
+        "name": "hadoop-config"
+      },
+      {
+        "emptyDir": {},
+        "name": "dfs"
+      },
+      {
+        "name": "default-token-hpswz",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "default-token-hpswz"
+        }
+      }
+    ]
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "annotations": {
+      "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"StatefulSet\",\"namespace\":\"hadoop-ns\",\"name\":\"hadoop-hadoop-yarn-nm\",\"uid\":\"8d421516-245a-11e8-9c69-0a8ad85db75e\",\"apiVersion\":\"apps/v1beta1\",\"resourceVersion\":\"274046\"}}\n"
+    },
+    "generateName": "hadoop-hadoop-yarn-nm-",
+    "labels": {
+      "app": "hadoop",
+      "component": "yarn-nm",
+      "controller-revision-hash": "hadoop-hadoop-yarn-nm-5455b8cbf5",
+      "release": "hadoop"
+    },
+    "name": "hadoop-hadoop-yarn-nm-0",
+    "namespace": "hadoop-ns"
+  },
+  "spec": {
+    "affinity": {
+      "podAntiAffinity": {
+        "preferredDuringSchedulingIgnoredDuringExecution": [
+          {
+            "podAffinityTerm": {
+              "labelSelector": {
+                "matchLabels": {
+                  "app": "hadoop",
+                  "component": "yarn-nm",
+                  "release": "hadoop"
+                }
+              },
+              "topologyKey": "kubernetes.io/hostname"
+            },
+            "weight": 5
+          }
+        ]
+      }
+    },
+    "containers": [
+      {
+        "command": [
+          "/bin/bash",
+          "/tmp/hadoop-config/bootstrap.sh",
+          "-d"
+        ],
+        "env": [
+          {
+            "name": "MY_CPU_LIMIT",
+            "valueFrom": {
+              "resourceFieldRef": {
+                "containerName": "yarn-nm",
+                "divisor": "1",
+                "resource": "limits.cpu"
+              }
+            }
+          },
+          {
+            "name": "MY_MEM_LIMIT",
+            "valueFrom": {
+              "resourceFieldRef": {
+                "containerName": "yarn-nm",
+                "divisor": "1M",
+                "resource": "limits.memory"
+              }
+            }
+          }
+        ],
+        "image": "danisla/hadoop:2.7.3",
+        "imagePullPolicy": "IfNotPresent",
+        "livenessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/node",
+            "port": 8042,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 10,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "name": "yarn-nm",
+        "ports": [
+          {
+            "containerPort": 8088,
+            "name": "web",
+            "protocol": "TCP"
+          }
+        ],
+        "readinessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/node",
+            "port": 8042,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 10,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "resources": {
+          "limits": {
+            "cpu": "450m",
+            "memory": "2Gi"
+          },
+          "requests": {
+            "cpu": "450m",
+            "memory": "2Gi"
+          }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [
+          {
+            "mountPath": "/tmp/hadoop-config",
+            "name": "hadoop-config"
+          },
+          {
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+            "name": "default-token-hpswz",
+            "readOnly": true
+          }
+        ]
+      }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "hostname": "hadoop-hadoop-yarn-nm-0",
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "subdomain": "hadoop-hadoop-yarn-nm",
+    "terminationGracePeriodSeconds": 0,
+    "tolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/notReady",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/unreachable",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      }
+    ],
+    "volumes": [
+      {
+        "configMap": {
+          "defaultMode": 420,
+          "name": "hadoop-hadoop"
+        },
+        "name": "hadoop-config"
+      },
+      {
+        "name": "default-token-hpswz",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "default-token-hpswz"
+        }
+      }
+    ]
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "annotations": {
+      "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"StatefulSet\",\"namespace\":\"hadoop-ns\",\"name\":\"hadoop-hadoop-yarn-nm\",\"uid\":\"8d421516-245a-11e8-9c69-0a8ad85db75e\",\"apiVersion\":\"apps/v1beta1\",\"resourceVersion\":\"274069\"}}\n"
+    },
+    "generateName": "hadoop-hadoop-yarn-nm-",
+    "labels": {
+      "app": "hadoop",
+      "component": "yarn-nm",
+      "controller-revision-hash": "hadoop-hadoop-yarn-nm-5455b8cbf5",
+      "release": "hadoop"
+    },
+    "name": "hadoop-hadoop-yarn-nm-1",
+    "namespace": "hadoop-ns"
+  },
+  "spec": {
+    "affinity": {
+      "podAntiAffinity": {
+        "preferredDuringSchedulingIgnoredDuringExecution": [
+          {
+            "podAffinityTerm": {
+              "labelSelector": {
+                "matchLabels": {
+                  "app": "hadoop",
+                  "component": "yarn-nm",
+                  "release": "hadoop"
+                }
+              },
+              "topologyKey": "kubernetes.io/hostname"
+            },
+            "weight": 5
+          }
+        ]
+      }
+    },
+    "containers": [
+      {
+        "command": [
+          "/bin/bash",
+          "/tmp/hadoop-config/bootstrap.sh",
+          "-d"
+        ],
+        "env": [
+          {
+            "name": "MY_CPU_LIMIT",
+            "valueFrom": {
+              "resourceFieldRef": {
+                "containerName": "yarn-nm",
+                "divisor": "1",
+                "resource": "limits.cpu"
+              }
+            }
+          },
+          {
+            "name": "MY_MEM_LIMIT",
+            "valueFrom": {
+              "resourceFieldRef": {
+                "containerName": "yarn-nm",
+                "divisor": "1M",
+                "resource": "limits.memory"
+              }
+            }
+          }
+        ],
+        "image": "danisla/hadoop:2.7.3",
+        "imagePullPolicy": "IfNotPresent",
+        "livenessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/node",
+            "port": 8042,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 10,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "name": "yarn-nm",
+        "ports": [
+          {
+            "containerPort": 8088,
+            "name": "web",
+            "protocol": "TCP"
+          }
+        ],
+        "readinessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/node",
+            "port": 8042,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 10,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "resources": {
+          "limits": {
+            "cpu": "450m",
+            "memory": "2Gi"
+          },
+          "requests": {
+            "cpu": "450m",
+            "memory": "2Gi"
+          }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [
+          {
+            "mountPath": "/tmp/hadoop-config",
+            "name": "hadoop-config"
+          },
+          {
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+            "name": "default-token-hpswz",
+            "readOnly": true
+          }
+        ]
+      }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "hostname": "hadoop-hadoop-yarn-nm-1",
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "subdomain": "hadoop-hadoop-yarn-nm",
+    "terminationGracePeriodSeconds": 0,
+    "tolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/notReady",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/unreachable",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      }
+    ],
+    "volumes": [
+      {
+        "configMap": {
+          "defaultMode": 420,
+          "name": "hadoop-hadoop"
+        },
+        "name": "hadoop-config"
+      },
+      {
+        "name": "default-token-hpswz",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "default-token-hpswz"
+        }
+      }
+    ]
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "annotations": {
+      "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"StatefulSet\",\"namespace\":\"hadoop-ns\",\"name\":\"hadoop-hadoop-yarn-nm\",\"uid\":\"8d421516-245a-11e8-9c69-0a8ad85db75e\",\"apiVersion\":\"apps/v1beta1\",\"resourceVersion\":\"274141\"}}\n"
+    },
+    "generateName": "hadoop-hadoop-yarn-nm-",
+    "labels": {
+      "app": "hadoop",
+      "component": "yarn-nm",
+      "controller-revision-hash": "hadoop-hadoop-yarn-nm-5455b8cbf5",
+      "release": "hadoop"
+    },
+    "name": "hadoop-hadoop-yarn-nm-2",
+    "namespace": "hadoop-ns"
+  },
+  "spec": {
+    "affinity": {
+      "podAntiAffinity": {
+        "preferredDuringSchedulingIgnoredDuringExecution": [
+          {
+            "podAffinityTerm": {
+              "labelSelector": {
+                "matchLabels": {
+                  "app": "hadoop",
+                  "component": "yarn-nm",
+                  "release": "hadoop"
+                }
+              },
+              "topologyKey": "kubernetes.io/hostname"
+            },
+            "weight": 5
+          }
+        ]
+      }
+    },
+    "containers": [
+      {
+        "command": [
+          "/bin/bash",
+          "/tmp/hadoop-config/bootstrap.sh",
+          "-d"
+        ],
+        "env": [
+          {
+            "name": "MY_CPU_LIMIT",
+            "valueFrom": {
+              "resourceFieldRef": {
+                "containerName": "yarn-nm",
+                "divisor": "1",
+                "resource": "limits.cpu"
+              }
+            }
+          },
+          {
+            "name": "MY_MEM_LIMIT",
+            "valueFrom": {
+              "resourceFieldRef": {
+                "containerName": "yarn-nm",
+                "divisor": "1M",
+                "resource": "limits.memory"
+              }
+            }
+          }
+        ],
+        "image": "danisla/hadoop:2.7.3",
+        "imagePullPolicy": "IfNotPresent",
+        "livenessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/node",
+            "port": 8042,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 10,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "name": "yarn-nm",
+        "ports": [
+          {
+            "containerPort": 8088,
+            "name": "web",
+            "protocol": "TCP"
+          }
+        ],
+        "readinessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/node",
+            "port": 8042,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 10,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "resources": {
+          "limits": {
+            "cpu": "450m",
+            "memory": "2Gi"
+          },
+          "requests": {
+            "cpu": "450m",
+            "memory": "2Gi"
+          }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [
+          {
+            "mountPath": "/tmp/hadoop-config",
+            "name": "hadoop-config"
+          },
+          {
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+            "name": "default-token-hpswz",
+            "readOnly": true
+          }
+        ]
+      }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "hostname": "hadoop-hadoop-yarn-nm-2",
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "subdomain": "hadoop-hadoop-yarn-nm",
+    "terminationGracePeriodSeconds": 0,
+    "tolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/notReady",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/unreachable",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      }
+    ],
+    "volumes": [
+      {
+        "configMap": {
+          "defaultMode": 420,
+          "name": "hadoop-hadoop"
+        },
+        "name": "hadoop-config"
+      },
+      {
+        "name": "default-token-hpswz",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "default-token-hpswz"
+        }
+      }
+    ]
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "annotations": {
+      "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"StatefulSet\",\"namespace\":\"hadoop-ns\",\"name\":\"hadoop-hadoop-yarn-nm\",\"uid\":\"8d421516-245a-11e8-9c69-0a8ad85db75e\",\"apiVersion\":\"apps/v1beta1\",\"resourceVersion\":\"274172\"}}\n"
+    },
+    "generateName": "hadoop-hadoop-yarn-nm-",
+    "labels": {
+      "app": "hadoop",
+      "component": "yarn-nm",
+      "controller-revision-hash": "hadoop-hadoop-yarn-nm-5455b8cbf5",
+      "release": "hadoop"
+    },
+    "name": "hadoop-hadoop-yarn-nm-3",
+    "namespace": "hadoop-ns"
+  },
+  "spec": {
+    "affinity": {
+      "podAntiAffinity": {
+        "preferredDuringSchedulingIgnoredDuringExecution": [
+          {
+            "podAffinityTerm": {
+              "labelSelector": {
+                "matchLabels": {
+                  "app": "hadoop",
+                  "component": "yarn-nm",
+                  "release": "hadoop"
+                }
+              },
+              "topologyKey": "kubernetes.io/hostname"
+            },
+            "weight": 5
+          }
+        ]
+      }
+    },
+    "containers": [
+      {
+        "command": [
+          "/bin/bash",
+          "/tmp/hadoop-config/bootstrap.sh",
+          "-d"
+        ],
+        "env": [
+          {
+            "name": "MY_CPU_LIMIT",
+            "valueFrom": {
+              "resourceFieldRef": {
+                "containerName": "yarn-nm",
+                "divisor": "1",
+                "resource": "limits.cpu"
+              }
+            }
+          },
+          {
+            "name": "MY_MEM_LIMIT",
+            "valueFrom": {
+              "resourceFieldRef": {
+                "containerName": "yarn-nm",
+                "divisor": "1M",
+                "resource": "limits.memory"
+              }
+            }
+          }
+        ],
+        "image": "danisla/hadoop:2.7.3",
+        "imagePullPolicy": "IfNotPresent",
+        "livenessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/node",
+            "port": 8042,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 10,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "name": "yarn-nm",
+        "ports": [
+          {
+            "containerPort": 8088,
+            "name": "web",
+            "protocol": "TCP"
+          }
+        ],
+        "readinessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/node",
+            "port": 8042,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 10,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "resources": {
+          "limits": {
+            "cpu": "450m",
+            "memory": "2Gi"
+          },
+          "requests": {
+            "cpu": "450m",
+            "memory": "2Gi"
+          }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [
+          {
+            "mountPath": "/tmp/hadoop-config",
+            "name": "hadoop-config"
+          },
+          {
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+            "name": "default-token-hpswz",
+            "readOnly": true
+          }
+        ]
+      }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "hostname": "hadoop-hadoop-yarn-nm-3",
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "subdomain": "hadoop-hadoop-yarn-nm",
+    "terminationGracePeriodSeconds": 0,
+    "tolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/notReady",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/unreachable",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      }
+    ],
+    "volumes": [
+      {
+        "configMap": {
+          "defaultMode": 420,
+          "name": "hadoop-hadoop"
+        },
+        "name": "hadoop-config"
+      },
+      {
+        "name": "default-token-hpswz",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "default-token-hpswz"
+        }
+      }
+    ]
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "annotations": {
+      "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"StatefulSet\",\"namespace\":\"hadoop-ns\",\"name\":\"hadoop-hadoop-yarn-rm\",\"uid\":\"8d450f8e-245a-11e8-9c69-0a8ad85db75e\",\"apiVersion\":\"apps/v1beta1\",\"resourceVersion\":\"274047\"}}\n"
+    },
+    "generateName": "hadoop-hadoop-yarn-rm-",
+    "labels": {
+      "app": "hadoop",
+      "component": "yarn-rm",
+      "controller-revision-hash": "hadoop-hadoop-yarn-rm-694576bfdb",
+      "release": "hadoop"
+    },
+    "name": "hadoop-hadoop-yarn-rm-0",
+    "namespace": "hadoop-ns"
+  },
+  "spec": {
+    "affinity": {
+      "podAntiAffinity": {
+        "preferredDuringSchedulingIgnoredDuringExecution": [
+          {
+            "podAffinityTerm": {
+              "labelSelector": {
+                "matchLabels": {
+                  "app": "hadoop",
+                  "component": "yarn-rm",
+                  "release": "hadoop"
+                }
+              },
+              "topologyKey": "kubernetes.io/hostname"
+            },
+            "weight": 5
+          }
+        ]
+      }
+    },
+    "containers": [
+      {
+        "command": [
+          "/bin/bash",
+          "/tmp/hadoop-config/bootstrap.sh",
+          "-d"
+        ],
+        "image": "danisla/hadoop:2.7.3",
+        "imagePullPolicy": "IfNotPresent",
+        "livenessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/ws/v1/cluster/info",
+            "port": 8088,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 10,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "name": "yarn-rm",
+        "ports": [
+          {
+            "containerPort": 8088,
+            "name": "web",
+            "protocol": "TCP"
+          }
+        ],
+        "readinessProbe": {
+          "failureThreshold": 3,
+          "httpGet": {
+            "path": "/ws/v1/cluster/info",
+            "port": 8088,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 5,
+          "periodSeconds": 10,
+          "successThreshold": 1,
+          "timeoutSeconds": 2
+        },
+        "resources": {
+          "limits": {
+            "cpu": "2",
+            "memory": "2Gi"
+          },
+          "requests": {
+            "cpu": "10m",
+            "memory": "256Mi"
+          }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [
+          {
+            "mountPath": "/tmp/hadoop-config",
+            "name": "hadoop-config"
+          },
+          {
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+            "name": "default-token-hpswz",
+            "readOnly": true
+          }
+        ]
+      }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "hostname": "hadoop-hadoop-yarn-rm-0",
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "subdomain": "hadoop-hadoop-yarn-rm",
+    "terminationGracePeriodSeconds": 0,
+    "tolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/notReady",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/unreachable",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      }
+    ],
+    "volumes": [
+      {
+        "configMap": {
+          "defaultMode": 420,
+          "name": "hadoop-hadoop"
+        },
+        "name": "hadoop-config"
+      },
+      {
+        "name": "default-token-hpswz",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "default-token-hpswz"
+        }
+      }
+    ]
+  }
+}
+{
+  "apiVersion": "v1",
+  "data": {
+    "bootstrap.sh": "#!/bin/bash\n\n: ${HADOOP_PREFIX:=/usr/local/hadoop}\n\n. $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh\n\n# Directory to find config artifacts\nCONFIG_DIR=\"/tmp/hadoop-config\"\n\n# Copy config files from volume mount\n\nfor f in slaves core-site.xml hdfs-site.xml mapred-site.xml yarn-site.xml; do\n  if [[ -e ${CONFIG_DIR}/$f ]]; then\n    cp ${CONFIG_DIR}/$f $HADOOP_PREFIX/etc/hadoop/$f\n  else\n    echo \"ERROR: Could not find $f in $CONFIG_DIR\"\n    exit 1\n  fi\ndone\n\n# installing libraries if any - (resource urls added comma separated to the ACP system variable)\ncd $HADOOP_PREFIX/share/hadoop/common ; for cp in ${ACP//,/ }; do  echo == $cp; curl -LO $cp ; done; cd -\n\nif [[ \"${HOSTNAME}\" =~ \"hdfs-nn\" ]]; then\n  mkdir -p /root/hdfs/namenode\n  $HADOOP_PREFIX/bin/hdfs namenode -format -force -nonInteractive\n  sed -i s/hadoop-hadoop-hdfs-nn/0.0.0.0/ /usr/local/hadoop/etc/hadoop/core-site.xml\n  $HADOOP_PREFIX/sbin/hadoop-daemon.sh start namenode\nfi\n\nif [[ \"${HOSTNAME}\" =~ \"hdfs-dn\" ]]; then\n  mkdir -p /root/hdfs/datanode\n\n  #  wait up to 30 seconds for namenode \n  (while [[ $count -lt 15 && -z `curl -sf http://hadoop-hadoop-hdfs-nn:50070` ]]; do ((count=count+1)) ; echo \"Waiting for hadoop-hadoop-hdfs-nn\" ; sleep 2; done && [[ $count -lt 15 ]])\n  [[ $? -ne 0 ]] && echo \"Timeout waiting for hdfs-nn, exiting.\" && exit 1\n\n  $HADOOP_PREFIX/sbin/hadoop-daemon.sh start datanode\nfi\n\nif [[ \"${HOSTNAME}\" =~ \"yarn-rm\" ]]; then\n  sed -i s/hadoop-hadoop-yarn-rm/0.0.0.0/ $HADOOP_PREFIX/etc/hadoop/yarn-site.xml\n  cp ${CONFIG_DIR}/start-yarn-rm.sh $HADOOP_PREFIX/sbin/\n  cd $HADOOP_PREFIX/sbin\n  chmod +x start-yarn-rm.sh\n  ./start-yarn-rm.sh\nfi\n\nif [[ \"${HOSTNAME}\" =~ \"yarn-nm\" ]]; then\n  sed -i '/<\\/configuration>/d' $HADOOP_PREFIX/etc/hadoop/yarn-site.xml\n  cat >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml <<- EOM\n  <property>\n    <name>yarn.nodemanager.resource.memory-mb</name>\n    <value>${MY_MEM_LIMIT:-2048}</value>\n  </property>\n\n  <property>\n    <name>yarn.nodemanager.resource.cpu-vcores</name>\n    <value>${MY_CPU_LIMIT:-2}</value>\n  </property>\nEOM\n  echo '</configuration>' >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml\n  cp ${CONFIG_DIR}/start-yarn-nm.sh $HADOOP_PREFIX/sbin/\n  cd $HADOOP_PREFIX/sbin\n  chmod +x start-yarn-nm.sh\n\n  #  wait up to 30 seconds for resourcemanager\n  (while [[ $count -lt 15 && -z `curl -sf http://hadoop-hadoop-yarn-rm:8088/ws/v1/cluster/info` ]]; do ((count=count+1)) ; echo \"Waiting for hadoop-hadoop-yarn-rm\" ; sleep 2; done && [[ $count -lt 15 ]])\n  [[ $? -ne 0 ]] && echo \"Timeout waiting for yarn-rm, exiting.\" && exit 1\n\n  ./start-yarn-nm.sh\nfi\n\nif [[ $1 == \"-d\" ]]; then\n  until find ${HADOOP_PREFIX}/logs -mmin -1 | egrep -q '.*'; echo \"`date`: Waiting for logs...\" ; do sleep 2 ; done\n  tail -F ${HADOOP_PREFIX}/logs/* &\n  while true; do sleep 1000; done\nfi\n\nif [[ $1 == \"-bash\" ]]; then\n  /bin/bash\nfi\n",
+    "core-site.xml": "<?xml version=\"1.0\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>\n<configuration>\n  <property>\n        <name>fs.defaultFS</name>\n        <value>hdfs://hadoop-hadoop-hdfs-nn:9000/</value>\n        <description>NameNode URI</description>\n    </property>\n</configuration>\n",
+    "hdfs-site.xml": "<?xml version=\"1.0\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>\n<configuration>\n  <property>\n    <name>dfs.datanode.use.datanode.hostname</name>\n    <value>false</value>\n  </property>\n\n  <property>\n    <name>dfs.client.use.datanode.hostname</name>\n    <value>false</value>\n  </property>\n\n  <property>\n    <name>dfs.replication</name>\n      <value>3</value>\n  </property>\n\n  <property>\n    <name>dfs.datanode.data.dir</name>\n    <value>file:///root/hdfs/datanode</value>\n    <description>DataNode directory</description>\n  </property>\n\n  <property>\n    <name>dfs.namenode.name.dir</name>\n    <value>file:///root/hdfs/namenode</value>\n    <description>NameNode directory for namespace and transaction logs storage.</description>\n  </property>\n\n  <property>\n    <name>dfs.namenode.datanode.registration.ip-hostname-check</name>\n    <value>false</value>\n  </property>\n</configuration>\n",
+    "mapred-site.xml": "<?xml version=\"1.0\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>\n\n<configuration>\n  <property>\n    <name>mapreduce.framework.name</name>\n    <value>yarn</value>\n  </property>\n  <property>\n    <name>mapreduce.jobhistory.address</name>\n    <value>hadoop-hadoop-yarn-rm-0.hadoop-hadoop-yarn-rm.hadoop-ns.svc.cluster.local:10020</value>\n  </property>\n  <property>\n    <name>mapreduce.jobhistory.webapp.address</name>\n    <value>hadoop-hadoop-yarn-rm-0.hadoop-hadoop-yarn-rm.hadoop-ns.svc.cluster.local:19888</value>\n  </property>\n</configuration>\n",
+    "slaves": "localhost\n",
+    "start-yarn-nm.sh": "#!/usr/bin/env bash\n\n# Licensed to the Apache Software Foundation (ASF) under one or more\n# contributor license agreements.  See the NOTICE file distributed with\n# this work for additional information regarding copyright ownership.\n# The ASF licenses this file to You under the Apache License, Version 2.0\n# (the \"License\"); you may not use this file except in compliance with\n# the License.  You may obtain a copy of the License at\n#\n#     http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n\n\n# Start all yarn daemons.  Run this on master node.\n\necho \"starting yarn daemons\"\n\nbin=`dirname \"${BASH_SOURCE-$0}\"`\nbin=`cd \"$bin\"; pwd`\n\nDEFAULT_LIBEXEC_DIR=\"$bin\"/../libexec\nHADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}\n. $HADOOP_LIBEXEC_DIR/yarn-config.sh\n\n# start resourceManager\n# \"$bin\"/yarn-daemon.sh --config $YARN_CONF_DIR  start resourcemanager\n# start nodeManager\n\"$bin\"/yarn-daemon.sh --config $YARN_CONF_DIR  start nodemanager\n# start proxyserver\n#\"$bin\"/yarn-daemon.sh --config $YARN_CONF_DIR  start proxyserver\n",
+    "start-yarn-rm.sh": "#!/usr/bin/env bash\n\n# Licensed to the Apache Software Foundation (ASF) under one or more\n# contributor license agreements.  See the NOTICE file distributed with\n# this work for additional information regarding copyright ownership.\n# The ASF licenses this file to You under the Apache License, Version 2.0\n# (the \"License\"); you may not use this file except in compliance with\n# the License.  You may obtain a copy of the License at\n#\n#     http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n\n\n# Start all yarn daemons.  Run this on master node.\n\necho \"starting yarn daemons\"\n\nbin=`dirname \"${BASH_SOURCE-$0}\"`\nbin=`cd \"$bin\"; pwd`\n\nDEFAULT_LIBEXEC_DIR=\"$bin\"/../libexec\nHADOOP_LIBEXEC_DIR=${HADOOP_LIBEXEC_DIR:-$DEFAULT_LIBEXEC_DIR}\n. $HADOOP_LIBEXEC_DIR/yarn-config.sh\n\n# start resourceManager\n\"$bin\"/yarn-daemon.sh --config $YARN_CONF_DIR  start resourcemanager\n# start nodeManager\n# \"$bin\"/yarn-daemons.sh --config $YARN_CONF_DIR  start nodemanager\n# start proxyserver\n\"$bin\"/yarn-daemon.sh --config $YARN_CONF_DIR  start proxyserver\n",
+    "yarn-site.xml": "<?xml version=\"1.0\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>\n\n<configuration>\n  <property>\n    <name>yarn.resourcemanager.hostname</name>\n    <value>hadoop-hadoop-yarn-rm</value>\n  </property>\n\n  <property>\n    <name>yarn.nodemanager.vmem-check-enabled</name>\n    <value>false</value>\n  </property>\n\n  <property>\n    <name>yarn.nodemanager.aux-services</name>\n    <value>mapreduce_shuffle</value>\n  </property>\n\n  <property>\n    <name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>\n    <value>org.apache.hadoop.mapred.ShuffleHandler</value>\n  </property>\n\n  <property>\n    <description>List of directories to store localized files in.</description>\n    <name>yarn.nodemanager.local-dirs</name>\n    <value>/var/lib/hadoop-yarn/cache/${user.name}/nm-local-dir</value>\n  </property>\n\n  <property>\n    <description>Where to store container logs.</description>\n    <name>yarn.nodemanager.log-dirs</name>\n    <value>/var/log/hadoop-yarn/containers</value>\n  </property>\n\n  <property>\n    <description>Where to aggregate logs to.</description>\n    <name>yarn.nodemanager.remote-app-log-dir</name>\n    <value>/var/log/hadoop-yarn/apps</value>\n  </property>\n\n  <property>\n    <name>yarn.application.classpath</name>\n    <value>\n      /usr/local/hadoop/etc/hadoop,\n      /usr/local/hadoop/share/hadoop/common/*,\n      /usr/local/hadoop/share/hadoop/common/lib/*,\n      /usr/local/hadoop/share/hadoop/hdfs/*,\n      /usr/local/hadoop/share/hadoop/hdfs/lib/*,\n      /usr/local/hadoop/share/hadoop/mapreduce/*,\n      /usr/local/hadoop/share/hadoop/mapreduce/lib/*,\n      /usr/local/hadoop/share/hadoop/yarn/*,\n      /usr/local/hadoop/share/hadoop/yarn/lib/*\n    </value>\n  </property>\n</configuration>\n"
+  },
+  "kind": "ConfigMap",
+  "metadata": {
+    "labels": {
+      "app": "hadoop",
+      "chart": "hadoop-1.0.4",
+      "heritage": "Tiller",
+      "release": "hadoop"
+    },
+    "name": "hadoop-hadoop",
+    "namespace": "hadoop-ns"
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "labels": {
+      "run": "inception-service"
+    },
+    "name": "inception-service",
+    "namespace": "tensorflow-ns"
+  },
+  "spec": {
+    "externalTrafficPolicy": "Cluster",
+    "ports": [
+      {
+        "nodePort": 32339,
+        "port": 9000,
+        "protocol": "TCP",
+        "targetPort": 9000
+      }
+    ],
+    "selector": {
+      "app": "inception-server"
+    },
+    "sessionAffinity": "None",
+    "type": "LoadBalancer"
+  }
+}
+{
+  "apiVersion": "extensions/v1beta1",
+  "kind": "Deployment",
+  "metadata": {
+    "annotations": {
+      "deployment.kubernetes.io/revision": "1"
+    },
+    "labels": {
+      "app": "inception-server"
+    },
+    "name": "inception-deployment",
+    "namespace": "tensorflow-ns"
+  },
+  "spec": {
+    "replicas": 3,
+    "selector": {
+      "matchLabels": {
+        "app": "inception-server"
+      }
+    },
+    "strategy": {
+      "rollingUpdate": {
+        "maxSurge": 1,
+        "maxUnavailable": 1
+      },
+      "type": "RollingUpdate"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "app": "inception-server"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "args": [
+              "serving/bazel-bin/tensorflow_serving/model_servers/tensorflow_model_server --port=9000 --model_name=inception --model_base_path=serving/inception-export"
+            ],
+            "command": [
+              "/bin/sh",
+              "-c"
+            ],
+            "image": "mountaintom/tensorflow-serving-inception-kubernetes-demo",
+            "imagePullPolicy": "Always",
+            "name": "inception-container",
+            "ports": [
+              {
+                "containerPort": 9000,
+                "protocol": "TCP"
+              }
+            ],
+            "resources": {},
+            "terminationMessagePath": "/dev/termination-log",
+            "terminationMessagePolicy": "File"
+          }
+        ],
+        "schedulerName": "default-scheduler"
+      }
+    }
+  }
+}
+{
+  "apiVersion": "extensions/v1beta1",
+  "kind": "ReplicaSet",
+  "metadata": {
+    "annotations": {
+      "deployment.kubernetes.io/desired-replicas": "3",
+      "deployment.kubernetes.io/max-replicas": "4",
+      "deployment.kubernetes.io/revision": "1"
+    },
+    "labels": {
+      "app": "inception-server",
+      "pod-template-hash": "1058018257"
+    },
+    "name": "inception-deployment-549d45d69c",
+    "namespace": "tensorflow-ns"
+  },
+  "spec": {
+    "replicas": 3,
+    "selector": {
+      "matchLabels": {
+        "app": "inception-server",
+        "pod-template-hash": "1058018257"
+      }
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "app": "inception-server",
+          "pod-template-hash": "1058018257"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "args": [
+              "serving/bazel-bin/tensorflow_serving/model_servers/tensorflow_model_server --port=9000 --model_name=inception --model_base_path=serving/inception-export"
+            ],
+            "command": [
+              "/bin/sh",
+              "-c"
+            ],
+            "image": "mountaintom/tensorflow-serving-inception-kubernetes-demo",
+            "imagePullPolicy": "Always",
+            "name": "inception-container",
+            "ports": [
+              {
+                "containerPort": 9000,
+                "protocol": "TCP"
+              }
+            ],
+            "resources": {},
+            "terminationMessagePath": "/dev/termination-log",
+            "terminationMessagePolicy": "File"
+          }
+        ],
+        "schedulerName": "default-scheduler"
+      }
+    }
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "annotations": {
+      "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"tensorflow-ns\",\"name\":\"inception-deployment-549d45d69c\",\"uid\":\"3f73bb26-2534-11e8-9c69-0a8ad85db75e\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"404589\"}}\n"
+    },
+    "generateName": "inception-deployment-549d45d69c-",
+    "labels": {
+      "app": "inception-server",
+      "pod-template-hash": "1058018257"
+    },
+    "name": "inception-deployment-549d45d69c-c6bm8",
+    "namespace": "tensorflow-ns"
+  },
+  "spec": {
+    "containers": [
+      {
+        "args": [
+          "serving/bazel-bin/tensorflow_serving/model_servers/tensorflow_model_server --port=9000 --model_name=inception --model_base_path=serving/inception-export"
+        ],
+        "command": [
+          "/bin/sh",
+          "-c"
+        ],
+        "image": "mountaintom/tensorflow-serving-inception-kubernetes-demo",
+        "imagePullPolicy": "Always",
+        "name": "inception-container",
+        "ports": [
+          {
+            "containerPort": 9000,
+            "protocol": "TCP"
+          }
+        ],
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+            "name": "default-token-jrvmp",
+            "readOnly": true
+          }
+        ]
+      }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/notReady",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/unreachable",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      }
+    ],
+    "volumes": [
+      {
+        "name": "default-token-jrvmp",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "default-token-jrvmp"
+        }
+      }
+    ]
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "annotations": {
+      "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"tensorflow-ns\",\"name\":\"inception-deployment-549d45d69c\",\"uid\":\"3f73bb26-2534-11e8-9c69-0a8ad85db75e\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"404589\"}}\n"
+    },
+    "generateName": "inception-deployment-549d45d69c-",
+    "labels": {
+      "app": "inception-server",
+      "pod-template-hash": "1058018257"
+    },
+    "name": "inception-deployment-549d45d69c-hmhvz",
+    "namespace": "tensorflow-ns"
+  },
+  "spec": {
+    "containers": [
+      {
+        "args": [
+          "serving/bazel-bin/tensorflow_serving/model_servers/tensorflow_model_server --port=9000 --model_name=inception --model_base_path=serving/inception-export"
+        ],
+        "command": [
+          "/bin/sh",
+          "-c"
+        ],
+        "image": "mountaintom/tensorflow-serving-inception-kubernetes-demo",
+        "imagePullPolicy": "Always",
+        "name": "inception-container",
+        "ports": [
+          {
+            "containerPort": 9000,
+            "protocol": "TCP"
+          }
+        ],
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+            "name": "default-token-jrvmp",
+            "readOnly": true
+          }
+        ]
+      }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/notReady",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/unreachable",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      }
+    ],
+    "volumes": [
+      {
+        "name": "default-token-jrvmp",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "default-token-jrvmp"
+        }
+      }
+    ]
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "annotations": {
+      "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicaSet\",\"namespace\":\"tensorflow-ns\",\"name\":\"inception-deployment-549d45d69c\",\"uid\":\"3f73bb26-2534-11e8-9c69-0a8ad85db75e\",\"apiVersion\":\"extensions\",\"resourceVersion\":\"404589\"}}\n"
+    },
+    "generateName": "inception-deployment-549d45d69c-",
+    "labels": {
+      "app": "inception-server",
+      "pod-template-hash": "1058018257"
+    },
+    "name": "inception-deployment-549d45d69c-kl8p5",
+    "namespace": "tensorflow-ns"
+  },
+  "spec": {
+    "containers": [
+      {
+        "args": [
+          "serving/bazel-bin/tensorflow_serving/model_servers/tensorflow_model_server --port=9000 --model_name=inception --model_base_path=serving/inception-export"
+        ],
+        "command": [
+          "/bin/sh",
+          "-c"
+        ],
+        "image": "mountaintom/tensorflow-serving-inception-kubernetes-demo",
+        "imagePullPolicy": "Always",
+        "name": "inception-container",
+        "ports": [
+          {
+            "containerPort": 9000,
+            "protocol": "TCP"
+          }
+        ],
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [
+          {
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+            "name": "default-token-jrvmp",
+            "readOnly": true
+          }
+        ]
+      }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccount": "default",
+    "serviceAccountName": "default",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/notReady",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      },
+      {
+        "effect": "NoExecute",
+        "key": "node.alpha.kubernetes.io/unreachable",
+        "operator": "Exists",
+        "tolerationSeconds": 300
+      }
+    ],
+    "volumes": [
+      {
+        "name": "default-token-jrvmp",
+        "secret": {
+          "defaultMode": 420,
+          "secretName": "default-token-jrvmp"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "name": "hadoop-ns",
+    "namespace": ""
+  },
+  "spec": {
+    "finalizers": [
+      "kubernetes"
+    ]
+  }
+}
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "name": "tensorflow-ns",
+    "namespace": ""
+  },
+  "spec": {
+    "finalizers": [
+      "kubernetes"
+    ]
+  }
+}
