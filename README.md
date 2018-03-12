@@ -20,7 +20,7 @@ Based on the config files, create the resources repectively.
 The new cluster will generate new secrets with different names, thus we need to replace the referring secrets with the new ones.
 
 ## Verification
-A simple verification of the new cluster in Azure for both Hadoop and Tensorflow is in /tools/verify.sh.
+A simple verification of the new cluster in Azure for both Hadoop and Tensorflow is in /tools/verify.sh. You can check out the video in the Result folder to see the full migration process.
 
 ## Issues encountered during development
 Please see Issues.md.
